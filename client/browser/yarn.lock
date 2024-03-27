@@ -805,6 +805,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/icons-material@npm:^5.15.12":
+  version: 5.15.12
+  resolution: "@mui/icons-material@npm:5.15.12"
+  dependencies:
+    "@babel/runtime": ^7.23.9
+  peerDependencies:
+    "@mui/material": ^5.0.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 312c8926cf863ca82f44f0350d0773eee15ab02d959fecb7de0e92105244642f06463effaee7fe3bdcc9753aa603f60695da82a1d91f3775ab514c3d65eb20c3
+  languageName: node
+  linkType: hard
+
 "@mui/material@npm:^5.15.12":
   version: 5.15.12
   resolution: "@mui/material@npm:5.15.12"
@@ -1521,6 +1537,7 @@ __metadata:
     "@emotion/react": ^11.11.4
     "@emotion/styled": ^11.11.0
     "@fontsource/roboto": ^5.0.12
+    "@mui/icons-material": ^5.15.12
     "@mui/material": ^5.15.12
     "@types/react": ^18.2.56
     "@types/react-dom": ^18.2.19

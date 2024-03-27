@@ -12,8 +12,20 @@ services:
         protocol: tcp
     volumes:
       - type: bind
-        source: ./
-        target: /app/
+        source: ./src
+        target: /app/src
+      - type: bind
+        source: ./public
+        target: /app/public
+      - type: bind
+        source: ./tsconfig.json
+        target: /app/tsconfig.json
+      - type: bind
+        source: ./tsconfig.node.json
+        target: /app/tsconfig.node.json
+      - type: bind
+        source: ./vite.config.ts
+        target: /app/vite.config.ts
       - type: volume
         target: /app/node_modules # avoid bringing in node_modules
       - type: volume

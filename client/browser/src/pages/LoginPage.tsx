@@ -38,7 +38,6 @@ export const LoginPage = () => {
                 .then(_ => {
                     navigate("/client")
                 }).catch(err => {
-                    console.log(err)
                     setError(err)
                 })
             }>Log in
