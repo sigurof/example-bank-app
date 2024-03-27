@@ -1,8 +1,5 @@
 package com.sigurof.bankybank.db
 
-import com.sigurof.bankybank.dbPassword
-import com.sigurof.bankybank.postgresUrl
-import com.sigurof.bankybank.user
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import liquibase.Liquibase
@@ -13,25 +10,38 @@ import liquibase.resource.ClassLoaderResourceAccessor
 import org.jetbrains.exposed.sql.Database
 import java.sql.Connection
 import java.sql.SQLException
+import javax.sql.DataSource
 
-fun configureDb() {
-    val datasource =
-        HikariDataSource(
-            HikariConfig().apply {
-                jdbcUrl = postgresUrl
-                username = user
-                password = dbPassword
-            },
-        )
+val user = "postgres"
+val port = 5434
+val postgresUrl = "jdbc:postgresql://localhost:$port/postgres"
+val dbPassword = "bank"
+
+fun configureDb(datasource: DataSource) {
+    configureLiquibase(datasource)
+    configureJetbrainsExposed(datasource)
+}
+
+fun configureLiquibase(datasource: DataSource) =
     datasource.connection.use {
         runLiquibase(it)
     }
+
+fun hikariDatasource() =
+    HikariDataSource(
+        HikariConfig().apply {
+            jdbcUrl = postgresUrl
+            username = user
+            password = dbPassword
+        },
+    )
+
+fun configureJetbrainsExposed(datasource: DataSource) =
     Database.connect(
         datasource,
     )
-}
 
-private fun runLiquibase(c: Connection) {
+fun runLiquibase(c: Connection) {
     val liquibase: Liquibase?
     try {
         val database: liquibase.database.Database =

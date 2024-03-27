@@ -93,9 +93,9 @@ fun Application.configureUserRouting() {
     }
 }
 
-fun Application.configureAccountsRouting() {
-    val accounts: MutableMap<String, MutableList<Account>> = mutableMapOf()
+val accounts: MutableMap<String, MutableList<Account>> = mutableMapOf()
 
+fun Application.configureAccountsRouting() {
     routing {
         get("/accounts") {
             val session = call.request.cookies["sessionId"]
@@ -108,9 +108,7 @@ fun Application.configureAccountsRouting() {
                 call.respond(HttpStatusCode.Unauthorized)
                 return@get
             }
-            call.respond(
-                accounts[email] ?: emptyList(),
-            )
+            call.respond(accounts[email] ?: mutableListOf<Account>())
         }
     }
 }

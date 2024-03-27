@@ -4,12 +4,15 @@ val logbackVersion: String by project
 val exposedVersion: String by project
 val postgresqlDriverVersion: String by project
 val flywayVersion: String by project
+val liquibaseVersion: String by project
+val hikariCpVersion: String by project
+val kotestVersion: String by project
+val kotestVersionTestcontainers: String by project
 
 plugins {
     kotlin("jvm") version "1.9.23"
     id("io.ktor.plugin") version "2.3.9"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
-    id("org.liquibase.gradle") version "2.2.1"
 }
 
 java {
@@ -31,6 +34,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-server-core-jvm")
@@ -46,12 +53,12 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.postgresql:postgresql:$postgresqlDriverVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
-    implementation("org.liquibase:liquibase-core:4.26.0")
-    implementation("com.zaxxer:HikariCP:5.1.0")
+    implementation("org.liquibase:liquibase-core:$liquibaseVersion")
+    implementation("com.zaxxer:HikariCP:$hikariCpVersion")
 
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:$kotestVersionTestcontainers")
+    testImplementation("org.testcontainers:postgresql:1.19.7")
     testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
-
-    liquibaseRuntime("org.liquibase:liquibase-core:4.16.1")
-    liquibaseRuntime("org.postgresql:postgresql:$postgresqlDriverVersion")
 }
