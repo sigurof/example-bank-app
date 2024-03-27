@@ -7,16 +7,10 @@ RUN yarn set version 3.8.1
 COPY package.json yarn.lock ./
 RUN yarn install
 
-# Copy source code
 COPY . .
-#COPY ./index.html ./
-#COPY ./src ./src
-#COPY ./public ./public
-#COPY ./tsconfig.json tsconfig.node.json ./
-#COPY vite.config.ts ./
+EXPOSE 5173
 
-CMD ["yarn", "dev"]
-#EXPOSE 5173
+CMD ["yarn", "vite"]
 
 
 

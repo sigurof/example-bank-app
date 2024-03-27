@@ -9,32 +9,52 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import {Accounts} from "./pages/client/accounts/Accounts.tsx";
+import "./main.css"
+import {Transfer} from "./pages/client/transfers/Transfer.tsx";
+import {Loans} from "./pages/client/loans/Loans.tsx";
 
+export const paths = {
+    ROOT: "/",
+    CLIENT: "/client",
+    ACCOUNTS: "/client/accounts",
+    TRANSFER: "/client/transfer",
+    LOANS: "/client/loans",
+}
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: paths.ROOT,
         element: <LinksPage/>,
         errorElement: <ErrorPage/>
     },
     {
-
-        path: "/client",
+        path: paths.CLIENT,
         element: <ClientPages/>,
-        errorElement: <ErrorPage/>
+        errorElement: <ErrorPage/>,
+        children: [
+            {
+                path: paths.CLIENT,
+                element: <div>Home</div>
+            },
+            {
+                path: paths.ACCOUNTS,
+                element: <Accounts/>
+            },
+            {
+                path: paths.TRANSFER,
+                element: <Transfer/>
+            },
+            {
+                path: paths.LOANS,
+                element: <Loans/>
+            },
+        ]
     },
     {
         path: '/landing/login',
         element: <LoginPage/>,
         errorElement: <ErrorPage/>
     },
-    // {
-    //     path: '/landing/register',
-    //     element: <RegisterPage/>
-    // },
-    // {
-    //     path: '/client',
-    //     element: <ClientPage/>
-    // }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
