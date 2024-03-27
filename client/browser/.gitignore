@@ -1,0 +1,8 @@
+## Taken from Yarn docs: https://yarnpkg.com/getting-started/qa
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
