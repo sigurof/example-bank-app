@@ -1,4 +1,4 @@
-package sigurof.com.plugins
+package com.sigurof.bankybank
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -21,7 +21,7 @@ fun Application.configureSecurity() {
                     .require(Algorithm.HMAC256(jwtSecret))
                     .withAudience(jwtAudience)
                     .withIssuer(jwtDomain)
-                    .build()
+                    .build(),
             )
             validate { credential ->
                 if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null

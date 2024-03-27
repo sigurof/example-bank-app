@@ -2,7 +2,7 @@ import {atomWithStorage} from "jotai/utils";
 
 
 export const credentialsAtom = atomWithStorage("credentials", {
-    username: '',
+    email: '',
     password: ''
 }, undefined, {
     getOnInit: true

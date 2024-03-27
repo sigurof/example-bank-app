@@ -2,23 +2,25 @@ import {api} from "../../api/api.ts";
 import {Error, LandingButton, LandingInputField} from "./Common.tsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useMutation} from "@tanstack/react-query";
 
 
 export const RegisterPage = () => {
-    // const [_, setCredentials] = useAtom(credentialsAtom)
-    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
-    const [error, setError] = useState("")
-    const register = async () => {
-        await api.register(username, password);
-    }
+    const {mutate, error} = useMutation({
+        // queryKey: ["register"],
+        mutationFn: () => api.register({email, password}),
+        onSuccess: () => navigate("/landing/login")
+    })
+
     return (
         <div>
             <LandingInputField
-                placeholder={"Username"}
+                placeholder={"Email"}
                 onChange={(e) => {
-                    setUsername(e.target.value)
+                    setEmail(e.target.value)
                 }}/>
             <LandingInputField
                 placeholder={"password"}
@@ -27,17 +29,9 @@ export const RegisterPage = () => {
                     setPassword(e.target.value)
                 }}
             />
-            <LandingButton onClick={() => register()
-                .then(_ => {
-                    navigate("/landing/login")
-                }).catch(err => {
-                    setError(err)
-                })
-            }>Register
+            <LandingButton onClick={() => mutate()}>Register
             </LandingButton>
-            {error && <Error>{error}</Error>}
-
-
+            {error && <Error>{error.message}</Error>}
         </div>
     )
 }

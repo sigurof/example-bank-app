@@ -1,4 +1,4 @@
-package sigurof.com.plugins
+package com.sigurof.bankybank.plugins
 
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -15,7 +15,7 @@ fun Application.configureSerialization() {
     }
     routing {
         get("/json/kotlinx-serialization") {
-                call.respond(mapOf("hello" to "world"))
-            }
+            call.respond(mapOf("hello" to "world"))
+        }
     }
 }

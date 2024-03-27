@@ -1,14 +1,52 @@
+import axios from "axios";
+
+// const client = axios.create({
+//     baseURL: 'http://localhost:8080/',
+//     timeout: 2000,
+// })
+
+const authenticatedClient = axios.create({
+    baseURL: 'http://localhost:8080/',
+    // timeout: 2000,
+    withCredentials: true
+})
+export interface SessionInvalidEvent extends Event {
+    detail: string;
+}
+authenticatedClient.interceptors.response.use(
+    response => response,
+    error => {
+        const status = error.response.status
+        // Check for session invalidation specifically
+        console.log(`Error status: ${error.response.status} `)
+        if (status === 401) {
+            // Specific logic for invalid session
+            // console.log('Session invalid. Logging out...');
+            const event = new CustomEvent('sessionInvalid', {
+                detail: '/landing/login'
+            });
+            window.dispatchEvent(event);
+            // Logout logic here
+        } else if (status === 403) {
+            // Handle insufficient permissions without logging out
+            console.log('Access denied. Insufficient permissions.');
+        }
+        return Promise.reject(error);
+    }
+);
+
+type EmailPassword = { email: string, password: string };
 export const api = {
 
-    login: async (email: string, password: string) => {
-        console.log('api.login', email, password)
-        if (email === 'fail') throw 'Login failed'
-        return "token"
+    login: async ({email, password}: EmailPassword) => {
+        return authenticatedClient.post('/logIn', {email, password})
 
     },
-    register(email: string, password: string) {
-        console.log('api.register', email, password)
-        if (email === 'fail') throw 'Register failed'
+    register({email, password}: EmailPassword): Promise<void> {
+        return authenticatedClient.post('/signUp', {email, password})
+    },
+    accounts() {
+        return authenticatedClient.get("/accounts")
     }
 }
 

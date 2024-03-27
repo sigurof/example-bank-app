@@ -4,24 +4,27 @@ import {useAtom} from "jotai";
 import {api} from "../../api/api.ts";
 import {credentialsAtom} from "../../state.ts";
 import {Error, LandingButton, LandingInputField} from "./Common.tsx";
+import {useMutation} from "@tanstack/react-query";
 
 
 export const LoginPage = () => {
     const [_, setCredentials] = useAtom(credentialsAtom)
-    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
-    const [error, setError] = useState("")
-    const login = async () => {
-        await api.login(username, password)
-        setCredentials({username, password})
-    }
+    const {error, mutate} = useMutation({
+        mutationFn: () => api.login({email, password}),
+        onSuccess: () => {
+            navigate("/client")
+            setCredentials({email, password})
+        }
+    })
     return (
         <div>
             <LandingInputField
-                placeholder={"Username"}
+                placeholder={"Email"}
                 onChange={(e) => {
-                    setUsername(e.target.value)
+                    setEmail(e.target.value)
                 }}/>
             <LandingInputField
                 placeholder={"password"}
@@ -30,15 +33,9 @@ export const LoginPage = () => {
                     setPassword(e.target.value)
                 }}
             />
-            <LandingButton onClick={() => login()
-                .then(_ => {
-                    navigate("/client")
-                }).catch(err => {
-                    setError(err)
-                })
-            }>Log in
+            <LandingButton onClick={() => mutate()}>Log in
             </LandingButton>
-            {error && <Error>{error}</Error>}
+            {error && <Error>{error.message}</Error>}
         </div>
     )
 }

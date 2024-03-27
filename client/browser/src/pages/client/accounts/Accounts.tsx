@@ -1,6 +1,7 @@
 import {Tab} from "../Commons.tsx";
 import styled from "styled-components";
-import {accounts, Account as AccountType} from "../../../api/api.ts";
+import {Account as AccountType, accounts, api} from "../../../api/api.ts";
+import {useQuery} from "@tanstack/react-query";
 
 
 const AccountBed = styled.div`
@@ -45,6 +46,10 @@ const Account = ({account}: {account: AccountType})=>{
 }
 
 export const Accounts = ()=>{
+    const {data, error} = useQuery({
+        queryKey: ["accounts"],
+        queryFn: ()=>api.accounts()
+    })
     return (
         <Tab title={"Accounts"}>
             {accounts.map((acc, index) => {
@@ -54,6 +59,9 @@ export const Accounts = ()=>{
                     </div>
                 )
             })}
+            {
+                error && <div>{error.message}</div>
+            }
         </Tab>
 
     )

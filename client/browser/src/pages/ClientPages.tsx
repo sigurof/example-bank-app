@@ -32,10 +32,10 @@ const LogOutButton = styled.button`
     }
 `
 
-const UserMenu = ({username, onLogOut}: { onLogOut: () => void, username: string }) => {
+const UserMenu = ({email, onLogOut}: { onLogOut: () => void, email: string }) => {
     return (
         <UserMenuBed>
-            <div>{username}</div>
+            <div>{email}</div>
             <LogOutButton onClick={() => {
                 onLogOut()
             }}>Log out</LogOutButton>
@@ -101,18 +101,18 @@ const NavigationMenu = () => {
 
 export const ClientPages = () => {
     const [credentials, setCredentials] = useAtom(credentialsAtom)
-    const username = credentials.username
+    const email = credentials.email
     const navigate = useNavigate()
     console.log(credentials)
     useEffect(() => {
-        if (!username) navigate("/landing/login")
-    }, [username]);
+        if (!email) navigate("/landing/login")
+    }, [email]);
     return (
         <>
             <ActionBar>
                 <NavigationMenu/>
-                <UserMenu username={username} onLogOut={() => {
-                    setCredentials({username: "", password: ""})
+                <UserMenu email={email} onLogOut={() => {
+                    setCredentials({email: "", password: ""})
                     navigate("/landing/login")
                 }}/>
             </ActionBar>

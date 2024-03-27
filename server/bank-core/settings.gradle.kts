@@ -1,1 +1,1 @@
-rootProject.name = "sigurof.com.bank-core"
+rootProject.name = "com.sigurof.bank-core"

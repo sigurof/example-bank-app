@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import {SessionInvalidEvent} from "../api/api.ts";
 
 
 const LogoBar = styled.div`
@@ -32,6 +34,19 @@ const Backdrop = styled.div`
 
 
 export const Parent = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleSessionInvalid = (event: SessionInvalidEvent) => {
+            console.log('Session Invalid. Logging out.')
+            navigate(event.detail); // Navigate to the path provided in the event
+        };
+
+        window.addEventListener('sessionInvalid', handleSessionInvalid as EventListener);
+        return () => {
+            window.removeEventListener('sessionInvalid', handleSessionInvalid as EventListener);
+        };
+    }, [navigate]);
     return (
         <Backdrop>
             <LogoBar>

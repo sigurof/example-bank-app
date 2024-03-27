@@ -1,0 +1,116 @@
+openapi: "3.0.3"
+info:
+  title: "bank_app API"
+  description: "bank_app API"
+  version: "1.0.0"
+servers:
+- url: "https://bank_app"
+paths:
+  /accounts:
+    get:
+      description: ""
+      parameters:
+      - name: "sessionId"
+        in: "cookie"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "401":
+          description: "Unauthorized"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Account"
+  /logIn:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/LogInInformation"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Logged in"
+  /signUp:
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/LogInInformation"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "403":
+          description: "Forbidden"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "User already exists"
+  /json/kotlinx-serialization:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Map_String"
+components:
+  schemas:
+    Account:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        balance:
+          type: "integer"
+          format: "int32"
+      required:
+      - "email"
+    LogInInformation:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+      required:
+      - "email"
+      - "password"
+    Map:
+      type: "object"
+      properties: {}
+    Map_String:
+      type: "string"
