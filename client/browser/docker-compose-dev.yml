@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  bank-browser:
+    container_name: bank-browser
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - target: 5173
+        published: 5173
+        host_ip: 127.0.0.1 # ensures that port isn't exposed from host machine as well
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: ./
+        target: /app/
+      - type: volume
+        target: /app/node_modules # avoid bringing in node_modules
+      - type: volume
+        target: /app/.yarn # avoid bringing in .yarn
+
