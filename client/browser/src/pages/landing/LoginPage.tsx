@@ -1,13 +1,10 @@
 import {useState} from "react";
-import {api} from "../api/api.ts";
 import {useNavigate} from "react-router-dom";
-import styled from "styled-components";
-import {credentialsAtom} from "../state.ts";
 import {useAtom} from "jotai";
+import {api} from "../../api/api.ts";
+import {credentialsAtom} from "../../state.ts";
+import {Error, LandingButton, LandingInputField} from "./Common.tsx";
 
-const Error = styled.div`
-    color: red;
-`
 
 export const LoginPage = () => {
     const [_, setCredentials] = useAtom(credentialsAtom)
@@ -20,31 +17,28 @@ export const LoginPage = () => {
         setCredentials({username, password})
     }
     return (
-        <div id="loginPage">
-            <h1>Login Page</h1>
-            <input
-                placeholder={"username"}
+        <div>
+            <LandingInputField
+                placeholder={"Username"}
                 onChange={(e) => {
                     setUsername(e.target.value)
                 }}/>
-            <input
+            <LandingInputField
                 placeholder={"password"}
-                type="password"
+                type="Password"
                 onChange={(e) => {
                     setPassword(e.target.value)
                 }}
             />
-            <button onClick={() => login()
+            <LandingButton onClick={() => login()
                 .then(_ => {
                     navigate("/client")
                 }).catch(err => {
                     setError(err)
                 })
             }>Log in
-            </button>
-            {
-                error && <Error>{error}</Error>
-            }
+            </LandingButton>
+            {error && <Error>{error}</Error>}
         </div>
     )
 }

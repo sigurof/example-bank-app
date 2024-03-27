@@ -9,6 +9,11 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.23"
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 group = "sigurof.com"
 version = "0.0.1"
 

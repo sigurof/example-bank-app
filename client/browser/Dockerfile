@@ -1,5 +1,5 @@
 
-FROM node:20.11.1-alpine3.18 as base
+FROM node:20.11.1-alpine3.18 AS base
 WORKDIR /app
 RUN corepack enable
 RUN yarn set version 3.8.1

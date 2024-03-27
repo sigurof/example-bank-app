@@ -9,7 +9,6 @@ const Bed = styled.div`
     margin: 1rem;
     border: 1px solid #666;
     border-radius: 1rem;
-    
 `
 
 export const Tab = ({title, children}: { title: string, children: React.ReactNode }) => {

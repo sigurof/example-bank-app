@@ -1,5 +1,6 @@
 ## Taken from Yarn docs: https://yarnpkg.com/getting-started/qa
 .yarn/*
+!.yarn/cache/.gitignore
 !.yarn/cache
 !.yarn/patches
 !.yarn/plugins

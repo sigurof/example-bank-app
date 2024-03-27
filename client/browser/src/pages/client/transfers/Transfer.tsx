@@ -4,7 +4,6 @@ import {accounts} from "../../../api/api.ts";
 
 
 const InputBed = styled.div`
-    // dark purple theme. Accents are light purple
     display: flex;
     flex-direction: column;
     margin: 0.5rem 0;
@@ -15,7 +14,6 @@ const InputBed = styled.div`
 
     input {
         padding: 0.5rem;
-        // dark purple theme. Accents are light purple
         background-color: #0e0e2b;
 
         color: white;

@@ -5,6 +5,10 @@ export const api = {
         if (email === 'fail') throw 'Login failed'
         return "token"
 
+    },
+    register(email: string, password: string) {
+        console.log('api.register', email, password)
+        if (email === 'fail') throw 'Register failed'
     }
 }
 
