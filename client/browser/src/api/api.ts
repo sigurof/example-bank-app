@@ -10,9 +10,11 @@ const authenticatedClient = axios.create({
     // timeout: 2000,
     withCredentials: true
 })
+
 export interface SessionInvalidEvent extends Event {
     detail: string;
 }
+
 authenticatedClient.interceptors.response.use(
     response => response,
     error => {
@@ -35,6 +37,7 @@ authenticatedClient.interceptors.response.use(
     }
 );
 
+
 type EmailPassword = { email: string, password: string };
 export const api = {
 
@@ -45,17 +48,24 @@ export const api = {
     register({email, password}: EmailPassword): Promise<void> {
         return authenticatedClient.post('/signUp', {email, password})
     },
-    accounts() {
-        return authenticatedClient.get("/accounts")
+
+    getAccounts: async (): Promise<Account[]> => {
+        return await authenticatedClient.get("/accounts")
+            .then(response => response.data)
+    },
+
+    createAccount: async (account: Partial<Account>): Promise<Account> => {
+        return await authenticatedClient.post("/accounts", account)
+            .then(response => response.data)
     }
 }
 
 export const accounts = [
     {
-        type: "checking",
         id: "123",
-        number: "1205 44 12345",
         name: "Main Account",
+        type: "checking",
+        number: "1205 44 12345",
         balance: 1000,
     },
     {

@@ -1,56 +1,13 @@
 import {Tab} from "../Commons.tsx";
 import styled from "styled-components";
 import {accounts} from "../../../api/api.ts";
+import {InputField, SelectField} from "../../../components/Input.tsx";
 
 
-const InputBed = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 0.5rem 0;
-
-    label {
-        margin-bottom: 0.5rem;
-    }
-
-    input {
-        padding: 0.5rem;
-        background-color: #0e0e2b;
-
-        color: white;
-        border: 1px solid #666;
-        border-radius: 0.5rem;
-
-        &:focus {
-            outline: none;
-            border-color: #7957eb;
-        }
-
-        &:hover {
-            border-color: #7957eb;
-        }
-
-    }
-
-    select {
-        padding: 0.5rem;
-        // dark purple theme. Accents are light purple
-        background-color: #0e0e2b;
-        color: white;
-        border: 1px solid #666;
-        border-radius: 0.5rem;
-
-        &:focus {
-            outline: none;
-            border-color: #7957eb;
-        }
-
-        &:hover {
-            border-color: #7957eb;
-        }
-    }
-`
 
 const TransferButton = styled.button`
+    height: 3rem;
+    align-self:end;
     padding: 0.5rem;
     // dark purple theme. Accents are light purple
     background-color: #0e0e2b;
@@ -73,17 +30,8 @@ const TransferButton = styled.button`
     }
     
     transition: background-color 0.3s;
-    
 `
 
-const InputField = ({name}: { name: string }) => {
-    return (
-        <InputBed>
-            <label htmlFor={name}>{name}</label>
-            <input id={name} name={name}/>
-        </InputBed>
-    )
-}
 
 const FormBed = styled.div`
     display: grid;
@@ -93,16 +41,6 @@ const FormBed = styled.div`
     margin: 1rem 0;
 `
 
-const SelectField = ({options, name}: { options: { id: string, label: string }[], name: string }) => {
-    return (
-        <InputBed>
-            <label htmlFor={name}>{name}</label>
-            <select id={name} name={name}>
-                {options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}
-            </select>
-        </InputBed>
-    )
-}
 
 export const Transfer = () => {
     return (

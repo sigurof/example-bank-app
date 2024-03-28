@@ -1,7 +1,9 @@
 import {Tab} from "../Commons.tsx";
 import styled from "styled-components";
-import {Account as AccountType, accounts, api} from "../../../api/api.ts";
-import {useQuery} from "@tanstack/react-query";
+import {Account as AccountType, api} from "../../../api/api.ts";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {InputField} from "../../../components/Input.tsx";
+import {ChangeEvent, useState} from "react";
 
 
 const AccountBed = styled.div`
@@ -35,7 +37,7 @@ const AccountBed = styled.div`
     }
 `
 
-const Account = ({account}: {account: AccountType})=>{
+const Account = ({account}: { account: AccountType }) => {
     return (
         <AccountBed>
             <h2>{account.name}</h2>
@@ -45,14 +47,42 @@ const Account = ({account}: {account: AccountType})=>{
     )
 }
 
-export const Accounts = ()=>{
-    const {data, error} = useQuery({
+const StyledButton = styled.button`
+    width: 100%;
+    height: 3rem;
+    align-self: end;
+    padding: 0.5rem;
+    // dark purple theme. Accents are light purple
+    background-color: #0e0e2b;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 0.5rem;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+        border-color: #7957eb;
+    }
+
+    &:hover {
+        border-color: #7957eb;
+    }
+
+    &:active {
+        background-color: #7957eb;
+    }
+
+    transition: background-color 0.3s;
+`
+
+const AccountsList = () => {
+    const {data: accounts, error} = useQuery({
         queryKey: ["accounts"],
-        queryFn: ()=>api.accounts()
+        queryFn: () => api.getAccounts()
     })
     return (
         <Tab title={"Accounts"}>
-            {accounts.map((acc, index) => {
+            {accounts?.map((acc, index) => {
                 return (
                     <div key={`account-${index}`}>
                         <Account account={acc}/>
@@ -63,6 +93,38 @@ export const Accounts = ()=>{
                 error && <div>{error.message}</div>
             }
         </Tab>
+    )
+}
+
+const CreateAccount = () => {
+    const [name, setName] = useState("")
+    // react query to post new account
+    const queryClient = useQueryClient()
+    const {mutate} = useMutation({
+        mutationKey: ["accounts"],
+        mutationFn: () => api.createAccount({name}),
+        onSuccess: () => queryClient.invalidateQueries({
+            queryKey: ["accounts"]
+        })
+    })
+
+    return (
+        <Tab title={"Create Account"}>
+            <InputField onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setName(e.target.value)
+            }} name={"Account Name"}/>
+            <StyledButton onClick={() => name && mutate()}>Submit</StyledButton>
+        </Tab>
+    )
+}
+
+export const Accounts = () => {
+    return (
+        <div>
+            <AccountsList/>
+            <CreateAccount/>
+        </div>
+
 
     )
 }
