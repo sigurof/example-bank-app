@@ -9,8 +9,8 @@ import io.ktor.server.netty.Netty
 fun main() {
     embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
         configureDb(hikariDatasource())
-        restModule()
         configureSecurity()
+        restModule()
     }
         .start(wait = true)
 }

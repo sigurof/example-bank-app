@@ -39,14 +39,26 @@ authenticatedClient.interceptors.response.use(
 
 
 type EmailPassword = { email: string, password: string };
+
+function basic({email, password}: EmailPassword) {
+    return {
+        "Authorization": "Basic " + btoa(`${email}:${password}`)
+    }
+}
+
 export const api = {
 
-    login: async ({email, password}: EmailPassword) => {
-        return authenticatedClient.post('/logIn', {email, password})
+    login: async (credentials: EmailPassword) => {
+        return authenticatedClient.post('/logIn', undefined,
+            {
+                headers: basic(credentials)
+            })
 
     },
-    register({email, password}: EmailPassword): Promise<void> {
-        return authenticatedClient.post('/signUp', {email, password})
+    register(credentials: EmailPassword): Promise<void> {
+        return authenticatedClient.post('/signUp', undefined, {
+            headers: basic(credentials)
+        })
     },
 
     getAccounts: async (): Promise<Account[]> => {

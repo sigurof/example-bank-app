@@ -1,8 +1,8 @@
 package com.sigurof.bankybank.db
 
+import com.sigurof.bankybank.SignUpPrincipal
 import com.sigurof.bankybank.web.rest.LogInRequest
 import com.sigurof.bankybank.web.rest.ProfileResponse
-import com.sigurof.bankybank.web.rest.SignUpRequest
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.insert
@@ -54,7 +54,7 @@ fun getProfile(session: String?): ProfileResponse? =
         }
     }
 
-fun createUser(loginRequest: SignUpRequest): CreateUserResult =
+fun createUser(loginRequest: SignUpPrincipal): CreateUserResult =
     transaction {
         try {
             val exists = Profiles.selectAll().where { Profiles.email eq loginRequest.email }.empty().not()
