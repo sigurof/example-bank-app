@@ -11,23 +11,8 @@ services:
         host_ip: 127.0.0.1 # ensures that port isn't exposed from host machine as well
     develop:
       watch:
-        - path: ${CLIENT_BROWSER_PATH}/src
-          target: /app/src
-          action: sync
-        - path: ${CLIENT_BROWSER_PATH}/public
-          target: /app/public
-          action: sync
-        - path: ${CLIENT_BROWSER_PATH}/index.html
-          target: /app/index.html
-          action: sync
-        - path: ${CLIENT_BROWSER_PATH}/tsconfig.json
-          target: /app/tsconfig.json
-          action: sync
-        - path: ${CLIENT_BROWSER_PATH}/tsconfig.node.json
-          target: /app/tsconfig.node.json
-          action: sync
-        - path: ${CLIENT_BROWSER_PATH}/vite.config.ts
-          target: /app/vite.config.ts
+        - path: ${CLIENT_BROWSER_PATH}
+          target: /app/
           action: sync
         - path: ${CLIENT_BROWSER_PATH}/Dockerfile
           action: rebuild
