@@ -3,7 +3,7 @@ volumes:
 services:
   browser:
     build:
-      context: ./client/browser
+      context: ${CLIENT_BROWSER_PATH}
       dockerfile: Dockerfile
     ports:
       - target: 5173
@@ -29,11 +29,11 @@ services:
         - path: ${CLIENT_BROWSER_PATH}/vite.config.ts
           target: /app/vite.config.ts
           action: sync
+        - path: ${CLIENT_BROWSER_PATH}/Dockerfile
+          action: rebuild
         - path: ${CLIENT_BROWSER_PATH}/package.json
           action: rebuild
         - path: ${CLIENT_BROWSER_PATH}/yarn.lock
-          action: rebuild
-        - path: ${CLIENT_BROWSER_PATH}/Dockerfile
           action: rebuild
   db:
     image: postgres:16.2-alpine3.19

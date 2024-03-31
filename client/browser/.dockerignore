@@ -4,7 +4,8 @@ README.md
 
 ## Docker related files
 docker-compose-dev.yml
-Dockerfile
+!Dockerfile
+
 
 ## Node modules
 node_modules
