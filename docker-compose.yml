@@ -1,10 +1,7 @@
-
-
-
-version: "3.9"
+volumes:
+  db-volume:
 services:
-  bank-browser:
-    container_name: bank-browser
+  browser:
     build:
       context: ./client/browser
       dockerfile: Dockerfile
@@ -12,29 +9,33 @@ services:
       - target: 5173
         published: 5173
         host_ip: 127.0.0.1 # ensures that port isn't exposed from host machine as well
-        protocol: tcp
-    volumes:
-      - type: bind
-        source: ${CLIENT_BROWSER_PATH}/src
-        target: /app/src
-      - type: bind
-        source: ${CLIENT_BROWSER_PATH}/public
-        target: /app/public
-      - type: bind
-        source: ${CLIENT_BROWSER_PATH}/tsconfig.json
-        target: /app/tsconfig.json
-      - type: bind
-        source: ${CLIENT_BROWSER_PATH}/tsconfig.node.json
-        target: /app/tsconfig.node.json
-      - type: bind
-        source: ${CLIENT_BROWSER_PATH}/vite.config.ts
-        target: /app/vite.config.ts
-      - type: volume
-        target: /app/node_modules # avoid bringing in node_modules
-      - type: volume
-        target: /app/.yarn # avoid bringing in .yarn
+    develop:
+      watch:
+        - path: ${CLIENT_BROWSER_PATH}/src
+          target: /app/src
+          action: sync
+        - path: ${CLIENT_BROWSER_PATH}/public
+          target: /app/public
+          action: sync
+        - path: ${CLIENT_BROWSER_PATH}/index.html
+          target: /app/index.html
+          action: sync
+        - path: ${CLIENT_BROWSER_PATH}/tsconfig.json
+          target: /app/tsconfig.json
+          action: sync
+        - path: ${CLIENT_BROWSER_PATH}/tsconfig.node.json
+          target: /app/tsconfig.node.json
+          action: sync
+        - path: ${CLIENT_BROWSER_PATH}/vite.config.ts
+          target: /app/vite.config.ts
+          action: sync
+        - path: ${CLIENT_BROWSER_PATH}/package.json
+          action: rebuild
+        - path: ${CLIENT_BROWSER_PATH}/yarn.lock
+          action: rebuild
+        - path: ${CLIENT_BROWSER_PATH}/Dockerfile
+          action: rebuild
   db:
-    container_name: bank-db
     image: postgres:16.2-alpine3.19
     ports:
       - target: 5432
@@ -43,9 +44,14 @@ services:
     restart: always
     shm_size: 128mb
     environment:
-      POSTGRES_PASSWORD: "bank"
+      POSTGRES_PASSWORD: bank
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - type: volume
+        target: /var/lib/postgresql/data
+        source: db-volume
   adminer:
     image: adminer
     restart: always
     ports:
-      - "8081:8080"
+      - 8081:8080

@@ -1,4 +1,14 @@
 
+
+README.md
+
+## Docker related files
+docker-compose-dev.yml
+Dockerfile
+
+## Node modules
+node_modules
+
 ## .yarn
 .yarn/*
 !.yarn/cache
@@ -7,4 +17,4 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-node_modules
+

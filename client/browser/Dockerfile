@@ -1,10 +1,9 @@
 
 FROM node:20.11.1-alpine3.18 AS base
 WORKDIR /app
-RUN corepack enable
-RUN yarn set version 3.8.1
 
-COPY package.json yarn.lock ./
+COPY package.json .yarnrc.yml yarn.lock .pnp.cjs .pnp.loader.mjs ./
+COPY .yarn/ ./.yarn
 RUN yarn install
 
 COPY . .
