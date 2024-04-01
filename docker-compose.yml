@@ -1,32 +1,45 @@
-volumes:
-  db-volume:
 services:
+  server:
+    build:
+      context: ${CORE_PATH}
+      dockerfile: Dockerfile
+      target: dist
+    ports:
+      - 8080:8080
+    networks:
+      - bank-app-network
+    depends_on:
+      - db
   browser:
     build:
-      context: ${CLIENT_BROWSER_PATH}
-      dockerfile: Dockerfile
+      context: ${BROWSER_PATH}
+      dockerfile: dev.Dockerfile
+      target: dev
     ports:
       - target: 5173
         published: 5173
         host_ip: 127.0.0.1 # ensures that port isn't exposed from host machine as well
     develop:
       watch:
-        - path: ${CLIENT_BROWSER_PATH}
+        - path: ${BROWSER_PATH}
           target: /app/
           action: sync
-        - path: ${CLIENT_BROWSER_PATH}/Dockerfile
+        - path: ${BROWSER_PATH}/Dockerfile
           action: rebuild
-        - path: ${CLIENT_BROWSER_PATH}/package.json
+        - path: ${BROWSER_PATH}/package.json
           action: rebuild
-        - path: ${CLIENT_BROWSER_PATH}/yarn.lock
+        - path: ${BROWSER_PATH}/yarn.lock
           action: rebuild
   db:
+    hostname: bank-app-db
     image: postgres:16.2-alpine3.19
     ports:
       - target: 5432
         published: 5434
         host_ip: 127.0.0.1
     restart: always
+    networks:
+      - bank-app-network
     shm_size: 128mb
     environment:
       POSTGRES_PASSWORD: bank
@@ -40,3 +53,9 @@ services:
     restart: always
     ports:
       - 8081:8080
+volumes:
+  db-volume:
+networks:
+  bank-app-network:
+    driver: bridge
+    name: bank-app-network

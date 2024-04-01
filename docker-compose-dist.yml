@@ -1,0 +1,15 @@
+volumes:
+  db-volume:
+networks:
+  bank-app-network:
+    driver: bridge
+    name: bank-app-network
+services:
+  server:
+    build:
+      target: dist
+  browser:
+    build:
+      target: dist
+  db:
+    ports: []
