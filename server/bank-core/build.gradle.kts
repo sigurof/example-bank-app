@@ -20,6 +20,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+ktor {
+    fatJar {
+        archiveFileName = "bank-core.jar"
+    }
+}
+
 group = "com.sigurof"
 version = "0.0.1"
 
@@ -48,6 +54,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
+    implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
