@@ -13,7 +13,7 @@ services:
   browser:
     build:
       context: ${BROWSER_PATH}
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
       target: dev
     ports:
       - target: 5173
