@@ -29,4 +29,6 @@ COPY ./ngingx.conf /etc/nginx/nginx.conf
 
 EXPOSE 5173
 
+USER nginx
+
 CMD ["nginx", "-g", "daemon off;"]
