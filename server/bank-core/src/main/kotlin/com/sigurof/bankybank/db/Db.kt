@@ -2,6 +2,7 @@ package com.sigurof.bankybank.db
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.ktor.server.application.Application
 import liquibase.Liquibase
 import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
@@ -11,11 +12,6 @@ import org.jetbrains.exposed.sql.Database
 import java.sql.Connection
 import java.sql.SQLException
 import javax.sql.DataSource
-
-val user = "postgres"
-val port = 5434
-val postgresUrl = "jdbc:postgresql://localhost:$port/postgres"
-val dbPassword = "bank"
 
 fun configureDb(datasource: DataSource) {
     configureLiquibase(datasource)
@@ -27,14 +23,22 @@ fun configureLiquibase(datasource: DataSource) =
         runLiquibase(it)
     }
 
-fun hikariDatasource() =
-    HikariDataSource(
+fun Application.hikariDatasource(): HikariDataSource {
+    val baseUrl = environment.config.property("db.jdbc.url").getString()
+    val user = environment.config.property("db.jdbc.user").getString()
+    val dbPassword = environment.config.property("db.jdbc.password").getString()
+    val port = environment.config.property("db.jdbc.port").getString()
+    val databaseName = environment.config.property("db.jdbc.database").getString()
+    val postgresUrl = "$baseUrl:$port/$databaseName"
+
+    return HikariDataSource(
         HikariConfig().apply {
             jdbcUrl = postgresUrl
             username = user
             password = dbPassword
         },
     )
+}
 
 fun configureJetbrainsExposed(datasource: DataSource) =
     Database.connect(

@@ -1,0 +1,15 @@
+ktor:
+  deployment:
+    port: 8080
+  application:
+    modules:
+      - com.sigurof.bankybank.ApplicationKt.module
+db:
+  jdbc:
+    user: postgres
+    port: 5434
+    database: postgres
+    url: "jdbc:postgresql://localhost"
+    password: bank
+
+
