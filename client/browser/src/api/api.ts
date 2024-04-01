@@ -1,13 +1,7 @@
 import axios from "axios";
 
-// const client = axios.create({
-//     baseURL: 'http://localhost:8080/',
-//     timeout: 2000,
-// })
-
-const authenticatedClient = axios.create({
+const client = axios.create({
     baseURL: 'http://localhost:8080/',
-    // timeout: 2000,
     withCredentials: true
 })
 
@@ -15,7 +9,7 @@ export interface SessionInvalidEvent extends Event {
     detail: string;
 }
 
-authenticatedClient.interceptors.response.use(
+client.interceptors.response.use(
     response => response,
     error => {
         const status = error.response.status
@@ -49,25 +43,25 @@ function basic({email, password}: EmailPassword) {
 export const api = {
 
     login: async (credentials: EmailPassword) => {
-        return authenticatedClient.post('/logIn', undefined,
+        return client.post('/logIn', undefined,
             {
                 headers: basic(credentials)
             })
 
     },
     register(credentials: EmailPassword): Promise<void> {
-        return authenticatedClient.post('/signUp', undefined, {
+        return client.post('/signUp', undefined, {
             headers: basic(credentials)
         })
     },
 
     getAccounts: async (): Promise<Account[]> => {
-        return await authenticatedClient.get("/accounts")
+        return await client.get("/accounts")
             .then(response => response.data)
     },
 
     createAccount: async (account: Partial<Account>): Promise<Account> => {
-        return await authenticatedClient.post("/accounts", account)
+        return await client.post("/accounts", account)
             .then(response => response.data)
     }
 }
