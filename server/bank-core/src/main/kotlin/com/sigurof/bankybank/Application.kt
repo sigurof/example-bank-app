@@ -3,14 +3,12 @@ package com.sigurof.bankybank
 import com.sigurof.bankybank.db.configureDb
 import com.sigurof.bankybank.db.hikariDatasource
 import com.sigurof.bankybank.web.rest.restModule
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.application.Application
 
-fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
-        configureDb(hikariDatasource())
-        configureSecurity()
-        restModule()
-    }
-        .start(wait = true)
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+fun Application.module() {
+    configureDb(hikariDatasource())
+    configureSecurity()
+    restModule()
 }
