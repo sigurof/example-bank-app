@@ -14,7 +14,6 @@ COPY . .
 
 # Running yarn install
 RUN yarn install
-COPY . .
 
 # Building static bundle
 RUN yarn build
